@@ -20,7 +20,7 @@ SyncBoard is a real-time collaborative Kanban board built with FastAPI, SQLite, 
 3. Start the server:
 
    ```powershell
-   uvicorn app.main:app --reload
+   python -m uvicorn app.main:app --reload
    ```
 
 Open http://127.0.0.1:8000. The SQLite database is created automatically as `syncboard.db`.
@@ -28,6 +28,22 @@ Open http://127.0.0.1:8000. The SQLite database is created automatically as `syn
 ## Configuration
 
 Set `SECRET_KEY` to a long random value for production. Set `DATABASE_URL` to use another SQLAlchemy-compatible database URL. The default token lifetime is 60 minutes.
+
+### Password reset email
+
+The app supports authenticated password changes and email-based password resets. Configure these environment variables before using forgot-password in production:
+
+```text
+FRONTEND_URL=https://your-domain.example
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USERNAME=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+SMTP_FROM_EMAIL=no-reply@your-domain.example
+SMTP_USE_TLS=true
+```
+
+Reset links expire after 30 minutes and can only be used once. If SMTP is not configured, the forgot-password endpoint returns a configuration error rather than exposing reset tokens.
 
 ## API
 
